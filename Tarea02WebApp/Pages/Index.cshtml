@@ -6,10 +6,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-8">
-            <img src="~/img/superheroes.jpg" class="img-fluid" alt="" />
+        <div class="col-7">
+            <img src="~/img/superheroes.jpg" class="img-fluid rounded mx-auto d-block" alt="" />
         </div>
-        <div class="col-4">
+        <div class="col-5">
 
             @if (Model.FirstSubmission)
             {
@@ -32,20 +32,19 @@
 
             <!-- INTRO -->
 
-            <div class="text-end">
-            </div>
+            <h1 class="fw-bold text-center py-4">Obten tu nombre de superhéroe</h1>
+            <p class="">Haz realidad tu sueño de ser un superhéroe! ¿Te has preguntado qué nombre tendrías como uno? ¡Deja que nuestra página te dé la respuesta! Simplemente ingresa tu <strong>nombre y mes de nacimiento</strong>, y te mostraremos tu identidad secreta!</p>
 
-            <h2 class="fw-bold text-center py-4">Obten tu nombre de superhéroe</h2>
 
             <!-- FORMS -->
 
             <form method="post">
-                <div class="form-group">
+                <div class="form-group pt-3">
                     <label for="inputName">Ingresa tu nombre</label>
                     <input asp-for="name" class="form-control" id="inputName" aria-describedby="nameHelp" placeholder="Nombre">
-                    <small id="nameHelp" class="form-text text-muted">Recuerda que puedes ingresar solamente tu primer nombre</small>
+                    <small id="nameHelp" class="form-text text-light">Recuerda que puedes ingresar solamente tu primer nombre</small>
                 </div>
-                <div class="form-group">
+                <div class="form-group pt-3">
                     <label for="inputMonth">Ingresa tu mes de nacimiento</label>
                     <select asp-for="month" class="form-control" id="inputMonth">
                         <option></option>
@@ -63,20 +62,15 @@
                         <option>Diciembre</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                <button type="submit" class="btn btn-success btn-sm mt-3">Generar</button>
             </form>
 
             <!-- MOSTRAR NOMBRE -->
 
             @if (Model.CorrectSubmission)
             {
-                <p>Valores obtenidos:</p>
-
-                <h1>Nombre:</h1>
-                <h2>@Model.name</h2>
-
-                <h1>Mes:</h1>
-                <h2>@Model.month</h2>
+                <p class="text-center pt-3">Tu nombre de superhéroe es:</p>
+                <h2 class="text-center pt-3">@Model.nameGenerationOutput  @Model.monthGenerationOutput</h2>
             }
 
         </div>
