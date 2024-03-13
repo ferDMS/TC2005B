@@ -5,14 +5,42 @@ namespace Tarea02WebApp.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        // Variable para guardar el nombre
+        [BindProperty]
+        public string name { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        // Variable para guardar el mes de nacimiento
+        [BindProperty]
+        public string month { get; set; }
+
+        // Variable para mostrar el resultado o error por primera vez
+        public bool FirstSubmission { get; set; } = false;
+
+        // Variable para mostrar el resultado o error
+        public bool CorrectSubmission { get; set; } = false;
+
+        public void OnPost()
         {
-            _logger = logger;
+            FirstSubmission = true;
+            CheckValidInput();
+            CheckNameInput();
+            CheckMonthInput();
         }
 
-        public void OnGet()
+        public void CheckValidInput()
+        {
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(month))
+            {
+                CorrectSubmission = true;
+            }
+        }
+
+        public void CheckNameInput()
+        {
+
+        }
+
+        public void CheckMonthInput()
         {
 
         }

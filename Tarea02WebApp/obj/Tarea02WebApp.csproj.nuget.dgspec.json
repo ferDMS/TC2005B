@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\Source\\Repos\\ferDMS\\TC2005B\\Tarea02WebApp\\Tarea02WebApp.csproj": {}
+    "/Users/pez/Documents/repos/TC2005B/Tarea02WebApp/Tarea02WebApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\Source\\Repos\\ferDMS\\TC2005B\\Tarea02WebApp\\Tarea02WebApp.csproj": {
+    "/Users/pez/Documents/repos/TC2005B/Tarea02WebApp/Tarea02WebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Source\\Repos\\ferDMS\\TC2005B\\Tarea02WebApp\\Tarea02WebApp.csproj",
+        "projectUniqueName": "/Users/pez/Documents/repos/TC2005B/Tarea02WebApp/Tarea02WebApp.csproj",
         "projectName": "Tarea02WebApp",
-        "projectPath": "C:\\Users\\PC\\Source\\Repos\\ferDMS\\TC2005B\\Tarea02WebApp\\Tarea02WebApp.csproj",
-        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Source\\Repos\\ferDMS\\TC2005B\\Tarea02WebApp\\obj\\",
+        "projectPath": "/Users/pez/Documents/repos/TC2005B/Tarea02WebApp/Tarea02WebApp.csproj",
+        "packagesPath": "/Users/pez/.nuget/packages/",
+        "outputPath": "/Users/pez/Documents/repos/TC2005B/Tarea02WebApp/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/pez/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -63,7 +56,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
