@@ -1,10 +1,84 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Obten tu Superheroe";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <img src="~/img/superheroes.jpg" class="img-fluid" alt="" />
+        </div>
+        <div class="col-4">
+
+            @if (Model.FirstSubmission)
+            {
+                <!-- POSIBLE ALERTA DE ERROR -->
+                if (!Model.CorrectSubmission)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> Nombre o mes no válidos.
+                        Por favor, intenta nuevamente.
+                    </div>
+                }
+                <!-- POSIBLE ALERTA DE EXITO -->
+                if (Model.CorrectSubmission)
+                {
+                    <div class="alert alert-success">
+                        <strong>Éxito!</strong> Hemos generado tu nombre de superhéroe, consúltalo más abajo.
+                    </div>
+                }
+            }
+
+            <!-- INTRO -->
+
+            <div class="text-end">
+            </div>
+
+            <h2 class="fw-bold text-center py-4">Obten tu nombre de superhéroe</h2>
+
+            <!-- FORMS -->
+
+            <form method="post">
+                <div class="form-group">
+                    <label for="inputName">Ingresa tu nombre</label>
+                    <input asp-for="name" class="form-control" id="inputName" aria-describedby="nameHelp" placeholder="Nombre">
+                    <small id="nameHelp" class="form-text text-muted">Recuerda que puedes ingresar solamente tu primer nombre</small>
+                </div>
+                <div class="form-group">
+                    <label for="inputMonth">Ingresa tu mes de nacimiento</label>
+                    <select asp-for="month" class="form-control" id="inputMonth">
+                        <option></option>
+                        <option>Enero</option>
+                        <option>Febrero</option>
+                        <option>Marzo</option>
+                        <option>Abril</option>
+                        <option>Mayo</option>
+                        <option>Junio</option>
+                        <option>Julio</option>
+                        <option>Agosto</option>
+                        <option>Septiembre</option>
+                        <option>Octubre</option>
+                        <option>Noviembre</option>
+                        <option>Diciembre</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+            </form>
+
+            <!-- MOSTRAR NOMBRE -->
+
+            @if (Model.CorrectSubmission)
+            {
+                <p>Valores obtenidos:</p>
+
+                <h1>Nombre:</h1>
+                <h2>@Model.name</h2>
+
+                <h1>Mes:</h1>
+                <h2>@Model.month</h2>
+            }
+
+        </div>
+    </div>
 </div>
