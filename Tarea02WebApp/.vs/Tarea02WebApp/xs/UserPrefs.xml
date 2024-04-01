@@ -1,25 +1,25 @@
 ﻿<Properties StartupConfiguration="{B57FB84E-9729-455F-A8C5-3269D0D34C7C}|https">
-  <MonoDevelop.Ide.ItemProperties.Tarea02WebApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Index.cshtml.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Tarea02WebApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Index.cshtml">
     <Files>
-      <File FileName="Pages/Index.cshtml" Line="6" Column="1" />
-      <File FileName="Pages/Index.cshtml.cs" Line="5" Column="2" />
+      <File FileName="Pages/Index.cshtml" Line="18" Column="18" />
+      <File FileName="Pages/Shared/_Layout.cshtml" Line="2" Column="17" />
+      <File FileName="Pages/Index.cshtml.cs" Line="45" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Tarea02WebApp">
-            <Node name="Tarea02WebApp">
-              <Node name="Pages">
-                <Node name="Index.cshtml">
-                  <Node name="Index.cshtml.cs" selected="True" />
-                </Node>
+            <Node name="Tarea02WebApp" expanded="True">
+              <Node name="Pages" expanded="True">
+                <Node name="Shared" expanded="True" />
+                <Node name="Index.cshtml" expanded="True" />
               </Node>
               <Node name="wwwroot" expanded="True" />
             </Node>
