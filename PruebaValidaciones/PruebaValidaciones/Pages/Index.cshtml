@@ -1,0 +1,39 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<div class="text-center">
+    <form method="post">
+
+        <span>Nombre:</span>
+        <input type="text" asp-for="usuarioX.Nombre" />
+        <span asp-validation-for="usuarioX.Nombre" class="text-danger"></span>
+        <br />
+
+        <span>Edad:</span>
+        <input type="text" asp-for="usuarioX.Edad" />
+        <span asp-validation-for="usuarioX.Edad" class="text-danger"></span>
+        <br />
+
+        <!-- Using basic variables -->
+        @*<span>Nombre:</span>
+        <input type="text" asp-for="Nombre" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+        <br />
+
+        <span>Edad:</span>
+        <input type="text" asp-for="Edad" />
+        <span asp-validation-for="Edad" class="text-danger"></span>
+        <br />*@
+
+        <input type="submit" value="Calcular" />
+
+        <br />
+        <br />
+        <br />
+        <span>Hola @Model.usuarioX.Nombre, @Model.Mensaje</span>
+    </form>
+</div>
