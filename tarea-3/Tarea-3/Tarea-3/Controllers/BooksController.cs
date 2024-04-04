@@ -3,84 +3,92 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
-using System.Data;
+
 using System.Security.Policy;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+// Para la conexión con la base de datos
+using MySql.Data.MySqlClient;
+
+// Para fácil configuración de nuevos comandos `CommandType.StoredProcedure;`
+using System.Data;
+
+// Para importar el connectionString de DB desde appsettings
+using Microsoft.Extensions.Configuration;
 
 namespace Tarea_3.Controllers
 {
-
     [Route("api/books")]
     public class BooksController : Controller
     {
-        // Connection string
-        private string _connectionString = "Server=127.0.0.1; Port=3306; Database=books; Uid=root; Password=root;";
-
-        // Book class
-        public class Book
+        // Importar el string de conexión de las appsettings
+        // El constructor modificado del BooksController recibe la configuración
+        private readonly IConfiguration _configuration;
+        private string _connectionString;
+        public BooksController(IConfiguration configuration)
         {
-            public int Id { get; set; }
-            public string Title { get; set; }
-            public string Author { get; set; }
-            public string Url { get; set; }
+            _configuration = configuration;
+            // Definir connectionString a partir de configuración recibida
+            if (_configuration != null && _configuration.GetConnectionString("db1") != null)
+            {
+                _connectionString = _configuration.GetConnectionString("db1");
+            }
         }
-
-        // Page class
-        public class Page
-        {
-            public int Id { get; set; }
-            public int BookId { get; set; }
-            public string Content { get; set; }
-        }
-
-        private List<Book> _books = new List<Book>();
-
-        private List<Page> _pages = new List<Page>();
 
 
         // GET: api/books
         [HttpGet]
         public IEnumerable<Book> GetAllBooks()
         {
-            List<Book> books = new List<Book>();
+            // Definir lista de libros
+            IList<Book> books = new List<Book>();
 
+            // Crear objeto de conexión MySQL con connectionString
+            // Debido a que está dentro de `using`, se cerrará la conexión automaticamente
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
+                // Abrir conexión MySQL
                 connection.Open();
 
+                // Crear objeto de comando, estableciendo el stored procedure y conexión donde se llamará
+                // Debido a que está dentro de `using`, se cerrará el comando automaticamente
                 using (MySqlCommand cmd = new MySqlCommand("book_getAllBooks", connection))
                 {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    // Establecer explicitamente que el comando llama a un stored procedure
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    // Crear objeto de reader, ejecutando el comando
+                    using (var reader = cmd.ExecuteReader())
                     {
+                        // Leer las filas (libros) regresadas una por una
                         while (reader.Read())
                         {
-                            Book book = new Book
-                            {
-                                Id = reader.GetInt32("id_book"),
-                                Title = reader.GetString("title"),
-                                Author = reader.GetString("author"),
-                                Url = reader.GetString("url")
-                            };
+                            // Crear un nuevo objeto de Book y guardar su información
+                            Book book = new Book();
+                            book.Id = reader.GetInt32("id_book");
+                            book.Title = reader.GetString("title");
+                            book.Author = reader.GetString("author");
+                            book.Url = reader.GetString("url");
 
+                            // Añadir Book a la lista
                             books.Add(book);
                         }
                     }
+                    // El comando se cierra automáticamente
                 }
+                // La conexión a DB se cierra automáticamente
             }
 
+            // Regresar lista de objetos Book
             return books;
         }
 
 
         // GET api/books/id
         [HttpGet("{bookID}")]
-        public ActionResult<Book> GetBookByID(int bookID)
+        public Book GetBookByID(int bookID)
         {
-            Book book = null;
+            // Como regresamos la información de un único libro, se inicializa el objeto Book
+            Book book = new Book();
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
@@ -88,201 +96,171 @@ namespace Tarea_3.Controllers
 
                 using (MySqlCommand cmd = new MySqlCommand("book_getBookByID", connection))
                 {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Añadir parámetro del stored procedure con el nombre dado directamente en la DB
                     cmd.Parameters.AddWithValue("@bookID", bookID);
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
+                        // Si se regresó una fila de la DB, entonces encontramos el libro
                         if (reader.Read())
                         {
-                            book = new Book
-                            {
-                                Id = reader.GetInt32("id_book"),
-                                Title = reader.GetString("title"),
-                                Author = reader.GetString("author"),
-                                Url = reader.GetString("url")
-                            };
-                        }
-                        else
-                        {
-                            return NotFound();
+                            // Añadir información del libro
+                            book.Id = reader.GetInt32("id_book");
+                            book.Title = reader.GetString("title");
+                            book.Author = reader.GetString("author");
+                            book.Url = reader.GetString("url");
                         }
                     }
                 }
             }
-
+            // Regresar el objeto Book con la información del libro
+            // Si no se regresa ni una fila, entonces no encontramos nada y se regresa Book vacío
             return book;
         }
+
 
         // GET api/books/id/pages
         [HttpGet("{bookID}/pages")]
         public IEnumerable<Page> GetPagesByBookID(int bookID)
         {
+            // Regresamos una lista de objetos tipo Page
             List<Page> pages = new List<Page>();
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (MySqlCommand cmd = connection.CreateCommand())
+                using (MySqlCommand cmd = new MySqlCommand("book_getPagesByBookID", connection))
                 {
-                    cmd.CommandText = "book_getPagesByBookID";
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    // Añadimos el único parámetro del stored procedure, que es el id del libro
                     cmd.Parameters.AddWithValue("@bookID", bookID);
 
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    using (var reader = cmd.ExecuteReader())
                     {
+                        // Leer las filas (páginas) regresadas una por una
                         while (reader.Read())
                         {
-                            Page page = new Page
-                            {
-                                Id = reader.GetInt32("id_page"),
-                                BookId = reader.GetInt32("id_book"),
-                                Content = reader.GetString("content")
-                            };
+                            // Crear el objeto de Page con su información y agregarlo a la lista
+                            Page page = new Page();
+                            page.Id = reader.GetInt32("id_page");
+                            page.BookId = reader.GetInt32("id_book");
+                            page.Content = reader.GetString("content");
 
                             pages.Add(page);
                         }
                     }
                 }
             }
-
+            // Si no encontramos el libro, no regresamos ninguna fila, por lo que regresaríamos lista vacía
+            // Si encontramos el libro pero no páginas, igualmente regresamos una lista vacía
             return pages;
         }
 
+
         // PUT api/books/id
         [HttpPut("{bookID}")]
-        public IActionResult UpdateBook(int bookID, [FromBody] Book book)
+        public void UpdateBook(int bookID, [FromBody] Book book)
         {
-            if (book == null)
-            {
-                return BadRequest("Invalid book object provided.");
-            }
+            // Nada se predefine aquí pues no regresamos nada
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (MySqlCommand cmd = connection.CreateCommand())
+                using (MySqlCommand cmd = new MySqlCommand("book_updateBook", connection))
                 {
-                    cmd.CommandText = "book_updateBook";
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    // Añadir los 4 parámetros, cuidando añadirlos con los nombres dados en el stored procedure
                     cmd.Parameters.AddWithValue("@bookID", bookID);
                     cmd.Parameters.AddWithValue("@newTitle", book.Title);
                     cmd.Parameters.AddWithValue("@newAuthor", book.Author);
                     cmd.Parameters.AddWithValue("@newUrl", book.Url);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                    // Preprocesamiento del comando para mayor eficiencia
+                    cmd.Prepare();
 
-                    if (rowsAffected > 0)
-                    {
-                        return Ok("Book updated successfully.");
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                    // Ejecutar el comando.
+                    // Este se usa específicamente para querys que no regresan valores (a contrario de cmd.ExecuteReader para SELECT)
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        // PUT api/books/id/id
-        [HttpPut("{bookID}/{pageID}")]
-        public IActionResult UpdatePage(int bookID, int pageID, [FromBody] Page page)
+
+        // PUT api/books/id/page/id
+        [HttpPut("{bookID}/page/{pageID}")]
+        public void UpdatePage(int bookID, int pageID, [FromBody] Page page)
         {
-            if (page == null)
-            {
-                return BadRequest("Invalid page object provided.");
-            }
+            // Nada se predefine aquí pues no regresamos nada
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (MySqlCommand cmd = connection.CreateCommand())
+                using (MySqlCommand cmd = new MySqlCommand("book_updatePage", connection))
                 {
-                    cmd.CommandText = "book_updatePage";
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    // Los parámetros a pasar al stored procedure, que también incluye el bookID
+                    cmd.Parameters.AddWithValue("@bookID", bookID);
                     cmd.Parameters.AddWithValue("@pageID", pageID);
                     cmd.Parameters.AddWithValue("@newContent", page.Content);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        return Ok("Page updated successfully.");
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        // POST api/books/id/pages
-        [HttpPost("{bookID}/pages")]
-        public IActionResult InsertPage(int bookID, [FromBody] Page page)
+
+        // POST api/books/id/page
+        [HttpPost("{bookID}/page")]
+        public void InsertPage(int bookID, [FromBody] Page page)
         {
-            if (page == null)
-            {
-                return BadRequest("Invalid page object provided.");
-            }
+            // Nada se predefine aquí pues no regresamos nada
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (MySqlCommand cmd = connection.CreateCommand())
+                using (MySqlCommand cmd = new MySqlCommand("book_insertPage", connection))
                 {
-                    cmd.CommandText = "book_insertPage";
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@bookID", bookID);
                     cmd.Parameters.AddWithValue("@pageContent", page.Content);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        return Ok("Page inserted successfully.");
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
 
+
         // DELETE api/books/id
-        [HttpDelete("{pageID}")]
-        public IActionResult DeletePage(int pageID)
+        [HttpDelete("{bookID}/page/{pageID}")]
+        public void DeletePage(int bookID, int pageID)
         {
+            // Nada se predefine aquí pues no regresamos nada
+
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (MySqlCommand cmd = connection.CreateCommand())
+                using (MySqlCommand cmd = new MySqlCommand("book_deletePage", connection))
                 {
-                    cmd.CommandText = "book_deletePage";
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@bookID", bookID);
                     cmd.Parameters.AddWithValue("@pageID", pageID);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        return Ok("Page deleted successfully.");
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

@@ -1,4 +1,4 @@
-DROP SCHEMA books;
+DROP SCHEMA if exists books;
 
 CREATE SCHEMA books;
 
@@ -47,14 +47,14 @@ BEGIN
     INSERT INTO pages (id_book, content) VALUES (bookID, pageContent);
 END//
 
-CREATE PROCEDURE `books`.`book_updatePage`(IN pageID INT, IN newContent VARCHAR(4000))
+CREATE PROCEDURE `books`.`book_updatePage`(IN bookID INT, IN pageID INT, IN newContent VARCHAR(4000))
 BEGIN
-    UPDATE pages SET content = newContent WHERE id_page = pageID;
+    UPDATE pages SET content = newContent WHERE id_page = pageID AND id_book = bookID;
 END//
 
-CREATE PROCEDURE `books`.`book_deletePage`(IN pageID INT)
+CREATE PROCEDURE `books`.`book_deletePage`(IN bookID INT, IN pageID INT)
 BEGIN
-    DELETE FROM pages WHERE id_page = pageID;
+    DELETE FROM pages WHERE id_page = pageID AND id_book = bookID;
 END//
 
 DELIMITER ;
