@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int BookId { get; set; }
+        public int PageNum { get; set; }
         public string Content { get; set; }
     }
 }
