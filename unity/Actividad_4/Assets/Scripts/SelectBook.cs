@@ -41,14 +41,4 @@ public class SelectBook : MonoBehaviour
    {
         BookController.Instance.Select(7);
    }
-
-   public void PreviewBook()
-   {
-        SceneManager.LoadScene("BookPreview");
-   }
-
-   public void MyLibrary()
-   {
-        SceneManager.LoadScene("My Library");
-   }
 }

@@ -6,13 +6,13 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 
-
-public class SelectCover : MonoBehaviour
+public class MySelectCover : MonoBehaviour
 {
     Texture2D image;
     Sprite newSprite;
     public Image newImage;
 
+    // Inicializar una enumeraci�n con default value book1
     public Books bookNumber = Books.book1;
     public enum Books
     {
@@ -25,9 +25,11 @@ public class SelectCover : MonoBehaviour
         book7
     }
 
+
     IEnumerator Start()
     {
-        string JSONurl = "https://localhost:7166/api/books";
+        // Debug.Log(((int)bookNumber).ToString());
+        string JSONurl = "https://localhost:7166/api/book/" + ((int)bookNumber+1).ToString();
         UnityWebRequest request = UnityWebRequest.Get(JSONurl);
         request.useHttpContinue = true;
         var cert = new ForceAceptAll();
@@ -35,15 +37,15 @@ public class SelectCover : MonoBehaviour
         cert?.Dispose();
 
         yield return request.SendWebRequest();
-        if(request.result != UnityWebRequest.Result.Success) 
+        if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Error Downloading: " + request.error);
         }
         else
         {
-            List<Book> bookList = new List<Book>();
-            bookList = JsonConvert.DeserializeObject<List<Book>>(request.downloadHandler.text);
-            string cover = bookList[(int)bookNumber].Cover;
+            Book book;
+            book = JsonConvert.DeserializeObject<Book>(request.downloadHandler.text);
+            string cover = book.Cover;
             StartCoroutine(DownloadImage(cover));
         }
     }
@@ -52,7 +54,7 @@ public class SelectCover : MonoBehaviour
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
         yield return request.SendWebRequest();
-        if(request.result != UnityWebRequest.Result.Success)
+        if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Error Downloading: " + request.error);
         }
@@ -62,6 +64,6 @@ public class SelectCover : MonoBehaviour
             newSprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(0.5f, 0.5f), 100.0f);
             newImage.sprite = newSprite;
         }
-        
-    }
+
+    }
 }

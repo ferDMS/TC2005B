@@ -10,6 +10,7 @@ public class BookController : MonoBehaviour
 {
     static public BookController Instance;
     public SelectCover SelectCover;
+    // MySelectCover MySelectCover;
     public SelectBook SelectBook;
     public Text nameText;
     public Text authorText;
@@ -20,15 +21,27 @@ public class BookController : MonoBehaviour
         Instance = this;
         Instance.SetReferences();
         DontDestroyOnLoad(this.gameObject);
+
+        // If returning from book preview, remain on the same book previewd before
+        if (PlayerPrefs.HasKey("book_no"))
+        {
+            Select(PlayerPrefs.GetInt("book_no"));
+        }
+        // Set initial player prefs (variables across scenes) if first time opening library as first book
+        else
+        {
+            Select(1);
+        }
     }
 
     void SetReferences()
     {
-        if(SelectCover == null)
+        if (SelectCover == null)
         {
             SelectCover = FindObjectOfType<SelectCover>();
         }
-        if(SelectBook == null)
+
+        if (SelectBook == null)
         {
             SelectBook = FindObjectOfType<SelectBook>();
         }
@@ -42,7 +55,7 @@ public class BookController : MonoBehaviour
 
     IEnumerator GetData()
     {
-        string JSONurl = "https://localhost:7296/api/books";
+        string JSONurl = "https://localhost:7166/api/books";
         UnityWebRequest request = UnityWebRequest.Get(JSONurl);
         request.useHttpContinue = true;
         var cert = new ForceAceptAll();

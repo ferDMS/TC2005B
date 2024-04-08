@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Page : MonoBehaviour
+public class Page
 {
-    public int Id { get; set; }
-    public int BookId { get; set; }
-    public string Content { get; set; }
+    public int Id;
+    public int BookId;
+    public int PageNum;
+    public string Content;
 }
