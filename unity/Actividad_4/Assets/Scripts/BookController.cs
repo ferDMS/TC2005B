@@ -8,32 +8,38 @@ using Newtonsoft.Json;
 
 public class BookController : MonoBehaviour
 {
+    // Variables para guardar las instancias de cada script para ejecutarlos
     static public BookController Instance;
     public SelectCover SelectCover;
     // MySelectCover MySelectCover;
     public SelectBook SelectBook;
+
+    // Variables para guardar la selección del libro
     public Text nameText;
     public Text authorText;
     public int BookSelection;
 
+    // Primera función llamada al inicio de la escena
     public void Awake()
     {
+        // Arreglar las instancias seleccionadas
         Instance = this;
         Instance.SetReferences();
         DontDestroyOnLoad(this.gameObject);
 
-        // If returning from book preview, remain on the same book previewd before
+        // Si ya teníamos una selección previa, mantener esa selección de libro
         if (PlayerPrefs.HasKey("book_no"))
         {
             Select(PlayerPrefs.GetInt("book_no"));
         }
-        // Set initial player prefs (variables across scenes) if first time opening library as first book
+        // Si no hay selección previa, seleccionar el primer libro por default
         else
         {
             Select(1);
         }
     }
 
+    // Función para arreglar instancias a usar
     void SetReferences()
     {
         if (SelectCover == null)
@@ -47,12 +53,63 @@ public class BookController : MonoBehaviour
         }
     }
 
+    // Función para llamar las demás funciones que seleccionan un libro
     public void Select(int _selection)
     {
         BookSelection = _selection;
         StartCoroutine(GetData());
     }
 
+    // Mi propia implementación de GetData, para obtener información de un solo libro
+    // en vez de todos a través de una llamada API que regresa un único libro especificado
+    IEnumerator GetData()
+    {
+        // Preparar llamada a API con URL, ignorando certificado SSL
+        string JSONurl = "https://localhost:7166/api/book/" + (BookSelection).ToString();
+        UnityWebRequest request = UnityWebRequest.Get(JSONurl);
+        request.useHttpContinue = true;
+        var cert = new ForceAceptAll();
+        request.certificateHandler = cert;
+        cert?.Dispose();
+
+        // Hacer llamada a la API.
+        yield return request.SendWebRequest();
+
+        // Si falla, desplegar el error
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Error Downloading: " + request.error);
+        }
+        // Si es exitosa, actualizar información con el libro seleccíonado
+        else
+        {
+            // Convertir el JSON de la resupuesta a la estructura de libro y guardar la selección en variables PlayerPrefs
+            Book book = JsonConvert.DeserializeObject<Book>(request.downloadHandler.text);
+            PlayerPrefs.SetInt("book_no", BookSelection);
+            // Actualizar información con libro seleccionado
+            LoadBookInfo(book);
+        }
+    }
+
+    // Mi propia implementación de LoadBookInfo, que obtiene en vez de una lista de libros
+    // únicamente el libro para el cual queremos cargar la información
+    public void LoadBookInfo(Book book)
+    {
+        // Aqui depende de como hayamos definido el nombre de la variable
+        // que guarda el nombre del libro dentro de la estructura de Book
+        string title = book.Title;
+        PlayerPrefs.SetString("book_name", title);
+        nameText.text = title;
+
+        // Al igual que arriba "Author" se usa porque así se llama la propiedad
+        // dentro de la estructura de Book
+        string author = book.Author;
+        PlayerPrefs.SetString("author", author);
+        authorText.text = author;
+    }
+
+
+    /*
     IEnumerator GetData()
     {
         string JSONurl = "https://localhost:7166/api/books";
@@ -76,6 +133,7 @@ public class BookController : MonoBehaviour
         }
     }
 
+
     public void LoadBookInfo(int idBook, List<Book> bookList)
     {
         // Aqui depende de como hayamos definido el nombre de la variable
@@ -90,4 +148,5 @@ public class BookController : MonoBehaviour
         PlayerPrefs.SetString("author", author);
         authorText.text = author;
     }
+    */
 }

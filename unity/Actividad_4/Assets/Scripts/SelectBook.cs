@@ -5,8 +5,13 @@ using UnityEngine;
 // Para el botón de cambiar de escena
 using UnityEngine.SceneManagement;
 
+
 public class SelectBook : MonoBehaviour
 {
+
+    // Se definen múltiples funciones pues cada una será llamada por
+    // un botón diferente correspondiente a cada libro de la librería
+
    public void ChooseBook1()
    {
         BookController.Instance.Select(1);
