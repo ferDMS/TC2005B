@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Librería para manejar textos de UI
 using UnityEngine.UI;
+
+// Librería para conectarse a un servidor por HTTP
 using UnityEngine.Networking;
+
+// Librería para hacer parsing the JSON
 using Newtonsoft.Json;
 
 public class BookController : MonoBehaviour
@@ -26,17 +31,6 @@ public class BookController : MonoBehaviour
         Instance = this;
         Instance.SetReferences();
         DontDestroyOnLoad(this.gameObject);
-
-        // Si ya teníamos una selección previa, mantener esa selección de libro
-        if (PlayerPrefs.HasKey("book_no"))
-        {
-            Select(PlayerPrefs.GetInt("book_no"));
-        }
-        // Si no hay selección previa, seleccionar el primer libro por default
-        else
-        {
-            Select(1);
-        }
     }
 
     // Función para arreglar instancias a usar
