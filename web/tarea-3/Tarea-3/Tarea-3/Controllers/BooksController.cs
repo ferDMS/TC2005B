@@ -24,16 +24,20 @@ namespace Tarea_3.Controllers
         // El constructor modificado del BooksController recibe la configuración
         private readonly IConfiguration _configuration;
         private string _connectionString;
+        private string password;
         public BooksController(IConfiguration configuration)
         {
             _configuration = configuration;
             // Definir connectionString a partir de configuración recibida
-            if (_configuration != null && _configuration.GetConnectionString("db1") != null)
+            if (_configuration != null && _configuration.GetConnectionString("cloud_db") != null)
             {
-                _connectionString = _configuration.GetConnectionString("db1");
+                _connectionString = _configuration.GetConnectionString("cloud_db");
+                // Get password from file
+                password = System.IO.File.ReadAllText("password.secret");
+                // Add password and SSL part to connection string
+                _connectionString = _connectionString + $"Password={password};" + "SslMode=Required;" + "CertificateFile=ca.cer;";
             }
         }
-
 
         // GET: api/books
         [HttpGet("books")]
