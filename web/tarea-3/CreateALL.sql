@@ -91,13 +91,14 @@ DELIMITER ;
 USE booksDB;
 
 INSERT INTO books (title, author, cover) VALUES 
-("Harry Potter and the Sorcerer's Stone", "J. K. Rowling", 'https://media.harrypotterfanzone.com/sorcerer-stone-childrens-tenth-anniversary-edition.jpg'),
-("Harry Potter and the Chamber of Secrets", "J. K. Rowling", 'https://media.harrypotterfanzone.com/chamber-of-secrets-uk-childrens-edition-2014.jpg'),
-("Harry Potter and the Prisoner of Azkaban", "J. K. Rowling", 'https://media.harrypotterfanzone.com/prisoner-of-azkaban-uk-childrens-edition-2014.jpg'),
-("Harry Potter and the Goblet of Fire", "J. K. Rowling", 'https://media.harrypotterfanzone.com/goblet-of-fire-adult-edition.jpg'),
-("Harry Potter and the Order of the Phoenix", "J. K. Rowling", 'https://media.harrypotterfanzone.com/order-of-the-phoenix-us-childrens-edition-2013.jpg'),
-("Harry Potter and the Half-Blood Prince", "J. K. Rowling", 'https://media.harrypotterfanzone.com/half-blood-prince-adult-edition.jpg'),
-("Harry Potter and the Deathly Hallows", "J. K. Rowling", 'https://media.harrypotterfanzone.com/deathly-hallows-signature-edition.jpg');
+('Harry Potter and the Sorcerer\'s Stone', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/sorcerer-stone-childrens-tenth-anniversary-edition.jpg'),
+('Harry Potter and the Chamber of Secrets', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/chamber-of-secrets-uk-childrens-edition-2014.jpg'),
+('Harry Potter and the Prisoner of Azkaban', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/prisoner-of-azkaban-uk-childrens-edition-2014.jpg'),
+('Harry Potter and the Goblet of Fire', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/goblet-of-fire-adult-edition.jpg'),
+('Harry Potter and the Order of the Phoenix', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/order-of-the-phoenix-us-childrens-edition-2013.jpg'),
+('Harry Potter and the Half-Blood Prince', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/half-blood-prince-adult-edition.jpg'),
+('Harry Potter and the Deathly Hallows', 'J. K. Rowling', 'https://media.harrypotterfanzone.com/deathly-hallows-signature-edition.jpg');
+
 
 /* old inserts
 CALL booksDB.insertBookPage(1, 
