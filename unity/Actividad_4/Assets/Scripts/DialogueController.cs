@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Librería para manejar textos de UI
+// Librerï¿½a para manejar textos de UI
 using UnityEngine.UI;
 
-// Librería para conectarse a un servidor por HTTP
+// Librerï¿½a para conectarse a un servidor por HTTP
 using UnityEngine.Networking;
 
-// Librería para hacer parsing the JSON
+// Librerï¿½a para hacer parsing the JSON
 using Newtonsoft.Json;
 
 using System.Linq;
@@ -23,11 +23,11 @@ public class DialogueController : MonoBehaviour
 
     private int Index = 0;
 
-    // Tiempo a esperar entre caracteres al escribir una página, en segundos
-    // Se usa para poder generar una animación de que se escribe el libro
+    // Tiempo a esperar entre caracteres al escribir una pï¿½gina, en segundos
+    // Se usa para poder generar una animaciï¿½n de que se escribe el libro
     public float DialogueSpeed = 0.05f;
 
-    // Tiempo a esperar antes de empezar a escribir una nueva página, en segundos
+    // Tiempo a esperar antes de empezar a escribir una nueva pï¿½gina, en segundos
     public float DelayToWrite = 0.5f;
 
     private int book;
@@ -38,20 +38,20 @@ public class DialogueController : MonoBehaviour
     {
         book = PlayerPrefs.GetInt("book_no");
 
-        // Llamar la función de obtener datos de las páginas del libro
+        // Llamar la funciï¿½n de obtener datos de las pï¿½ginas del libro
         StartCoroutine(GetData());
 
-        // Llamar la función para escribir el contenido de la página
-        // Utiliza la variable de index, que salva la página en la que nos encontramos
+        // Llamar la funciï¿½n para escribir el contenido de la pï¿½gina
+        // Utiliza la variable de index, que salva la pï¿½gina en la que nos encontramos
         StartCoroutine(WriteSentence());
     }
 
-    // Mi propia implementación de GetData, para obtener información de un solo libro
-    // en vez de todos a través de una llamada API que regresa un único libro especificado
+    // Mi propia implementaciï¿½n de GetData, para obtener informaciï¿½n de un solo libro
+    // en vez de todos a travï¿½s de una llamada API que regresa un ï¿½nico libro especificado
     IEnumerator GetData()
     {
         // Preparar llamada a API con URL, ignorando certificado SSL
-        string JSONurl = "https://localhost:7166/api/book/" + book + "/pages";
+        string JSONurl = "https://10.22.227.151:7166/api/book/" + book + "/pages";
         UnityWebRequest request = UnityWebRequest.Get(JSONurl);
         request.useHttpContinue = true;
         var cert = new ForceAceptAll();
@@ -66,13 +66,13 @@ public class DialogueController : MonoBehaviour
         {
             Debug.Log("Error Downloading: " + request.error);
         }
-        // Si es exitosa, actualizar información con el libro seleccíonado
+        // Si es exitosa, actualizar informaciï¿½n con el libro seleccï¿½onado
         else
         {
-            // Convertir el JSON de la resupuesta a la estructura de libro y guardar la selección en variables PlayerPrefs
+            // Convertir el JSON de la resupuesta a la estructura de libro y guardar la selecciï¿½n en variables PlayerPrefs
             List<Page> pageList = JsonConvert.DeserializeObject<List<Page>>(request.downloadHandler.text);
             
-            // Dependiendo de cuantas páginas tenemos, estamos reestructurando el arreglo de dialogues
+            // Dependiendo de cuantas pï¿½ginas tenemos, estamos reestructurando el arreglo de dialogues
             if(pageList.Count > 0)
             {
                 Sentences = Enumerable.Repeat<string>("", pageList.Count).ToArray<string>();
@@ -98,11 +98,11 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    // Función que se llamará por los botones para cambiar de página
+    // Funciï¿½n que se llamarï¿½ por los botones para cambiar de pï¿½gina
     void NextSentence()
     {
-        // Si existe una siguiente página posible de desplegar en
-        // el índice (nuevo) al que buscamos ir
+        // Si existe una siguiente pï¿½gina posible de desplegar en
+        // el ï¿½ndice (nuevo) al que buscamos ir
         if (Index < Sentences.Length && Index >= 0)
         {
             // Borrar
@@ -112,7 +112,7 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    // Función llamada por el botón de ir a siguiente página
+    // Funciï¿½n llamada por el botï¿½n de ir a siguiente pï¿½gina
     public void Next()
     {
         if (Index < Sentences.Length - 1)

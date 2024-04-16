@@ -27,7 +27,7 @@ public class SelectCover : MonoBehaviour
 
     IEnumerator Start()
     {
-        string JSONurl = "https://localhost:7166/api/books";
+        string JSONurl = "https://10.22.227.151:7166/api/books";
         UnityWebRequest request = UnityWebRequest.Get(JSONurl);
         request.useHttpContinue = true;
         var cert = new ForceAceptAll();

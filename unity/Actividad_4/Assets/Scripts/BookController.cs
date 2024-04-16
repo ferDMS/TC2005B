@@ -59,7 +59,7 @@ public class BookController : MonoBehaviour
     IEnumerator GetData()
     {
         // Preparar llamada a API con URL, ignorando certificado SSL
-        string JSONurl = "https://localhost:7166/api/book/" + (BookSelection).ToString();
+        string JSONurl = "https://10.22.227.151:7166/api/book/" + (BookSelection).ToString();
         UnityWebRequest request = UnityWebRequest.Get(JSONurl);
         request.useHttpContinue = true;
         var cert = new ForceAceptAll();

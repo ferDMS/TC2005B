@@ -12,7 +12,7 @@ public class MySelectCover : MonoBehaviour
     Sprite newSprite;
     public Image newImage;
 
-    // Inicializar una enumeración con default value book1
+    // Inicializar una enumeraciï¿½n con default value book1
     public Books bookNumber = Books.book1;
     // Cada valor de la estructura representa un int del 0 al 6
     public enum Books
@@ -26,12 +26,12 @@ public class MySelectCover : MonoBehaviour
         book7
     }
 
-    // Llamar a la API para obtener la información del libro seleccionado por `bookNumber`
+    // Llamar a la API para obtener la informaciï¿½n del libro seleccionado por `bookNumber`
     IEnumerator Start()
     {
         // Preparar llamada a la API, ignorando el certificado de SSL
-        // En la llamada se adjunta el número de libro a obtener como parámetro
-        string JSONurl = "https://localhost:7166/api/book/" + ((int)bookNumber+1).ToString();
+        // En la llamada se adjunta el nï¿½mero de libro a obtener como parï¿½metro
+        string JSONurl = "https://10.22.227.151:7166/api/book/" + ((int)bookNumber+1).ToString();
         UnityWebRequest request = UnityWebRequest.Get(JSONurl);
         request.useHttpContinue = true;
         var cert = new ForceAceptAll();
@@ -56,7 +56,7 @@ public class MySelectCover : MonoBehaviour
         }
     }
 
-    // Función para descargar la portada del libro según la URL obtenida de la llamada a la API
+    // Funciï¿½n para descargar la portada del libro segï¿½n la URL obtenida de la llamada a la API
     IEnumerator DownloadImage(string MediaUrl)
     {
         // Obtener textura desde una URL
@@ -67,7 +67,7 @@ public class MySelectCover : MonoBehaviour
             Debug.Log("Error Downloading: " + request.error);
         }
 
-        // Si la textura se obtiene con éxito, se despliega la imágen como un sprite
+        // Si la textura se obtiene con ï¿½xito, se despliega la imï¿½gen como un sprite
         else
         {
             image = DownloadHandlerTexture.GetContent(request);
