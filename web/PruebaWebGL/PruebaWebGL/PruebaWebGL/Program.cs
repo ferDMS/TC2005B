@@ -15,26 +15,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
-
-//app.UseStaticFiles();
-
+app.UseHttpsRedirection();
 var provider = new FileExtensionContentTypeProvider();
-provider.Mappings.Remove(".data");
 provider.Mappings[".data"] = "application/octet-stream";
-provider.Mappings.Remove(".wasm");
 provider.Mappings[".wasm"] = "application/wasm";
-provider.Mappings.Remove(".symbols.json");
-provider.Mappings[".symbols.json"] = "application/octet-stream";
-app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = provider });
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    ContentTypeProvider = provider,
+});
 
 
 app.UseRouting();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapRazorPages();
 
 app.Run();
-

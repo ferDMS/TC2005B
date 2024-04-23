@@ -13,6 +13,23 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+.background-img {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/img/paisaje.png');
+    background-size: cover;
+    background-position: bottom;
+    z-index: -10;
+    margin: 0;
+    padding: 0;
+}
+
+.main-title {
+    padding-top: 15%;
+    font-size: 660%;
+    color: black;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 0;
 }
