@@ -1,5 +1,6 @@
 ﻿html {
-  font-size: 14px;
+    font-size: 14px;
+    background-color: #F1F0CC;
 }
 
 @media (min-width: 768px) {
@@ -13,10 +14,28 @@ html {
   min-height: 100%;
 }
 
-.background-img {
-    position: fixed;
+header {
+    background-color: #8D775F;
+    color: white;
+}
+
+body {
+    background-color: #F1F0CC;
+}
+
+h1 {
+    color: #fff;
+    text-shadow: 3px 3px 0 #000, -3px 3px 0 #000, -3px -3px 0 #000, 3px -3px 0 #000;
+}
+
+.container #general {
+    margin: 0;
+    padding: 10vm;
+}
+
+.header-img {
     width: 100%;
-    height: 100vh;
+    height: auto;
     background-image: url('/img/paisaje.png');
     background-size: cover;
     background-position: bottom;
@@ -28,8 +47,14 @@ html {
 .main-title {
     padding-top: 15%;
     font-size: 660%;
-    color: black;
+    color: #F1F0CC;
     font-weight: 900;
     text-align: center;
     margin-bottom: 0;
+}
+
+.center-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -4,18 +4,157 @@
     ViewData["Title"] = "Nina's World";
 }
 
-<body class="container-fluid">
-    <div class="background-img"></div>
-
-    <div class="row">
-        <div class="col-12 justify-content-center my-4">
-            <h1 class="main-title">Nina's World</h1>
-            <h3 class="text-black text-center">Juega ahora!</h3>
-        </div>
-        <div class="col-4 my-4"></div>
-        <div class="col-4 text-center">
-            <a asp-page="/PaginaWebGL" class="btn btn-success" role="button" id="jugar-button"><h2>Jugar</h2></a>
-        </div>
-        <div class="col-4"></div>
+<!-- Main header of the website, with title of page -->
+<div class="col-auto text-container header-img">
+    <div class="row justify-content-center">
+        <h1 class="main-title pt-0">Nina's World</h1>
     </div>
-</body>
+</div>
+
+<div class="row justify-content-center">
+    <div class="row col-10 py-4 my-4 rounded-3">
+        @* Left side "row" definition for text *@
+        <div class="row col-12 col-lg-6 float-left mx-0 mt-4">
+            <h2 class="text-center text-md-start"><b>Historia</b></h2>
+            <p>Nina, una joven curiosa y protectora de su planeta, se aventura en el bosque en busca de respuestas sobre un misterioso fenómeno que ha estado afectando a su mundo. En su exploración, descubre un antiguo artefacto oculto entre los árboles, y al tocarlo, desencadena un evento catastrófico que sume a su planeta en el caos.</p>
+            <p>Ahora, con el destino de su planeta en juego, Nina se encuentra en una carrera contra el tiempo para restaurar el equilibrio en el cosmos. Pero su misión no será fácil, ya que en su camino se encuentran los Pájaros Malignos, seres místicos de destrucción.</p>
+            <p>Con valentía y determinación, Nina se adentra en un desafío celestial, esquivando a los pájaros y enfrentando las pruebas que se le presentan, todo con el fin de encontrar una manera de restaurar la armonía en su planeta y en todo el cosmos.</p>
+        </div>
+        @* Right side "row" definition for img *@
+        <div class="row col-12 col-lg-6 float-right my-auto mx-0">
+            <img src="img/nature1.png" class="rounded" />
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="row col-10 py-4 my-4 rounded-3">
+        @* Left side "row" definition for img *@
+        <div class="row col-12 col-lg-6 float-left my-auto mx-0">
+            <img src="img/nature2.png" class="rounded" />
+        </div>
+        @* Right side "row" definition for text *@
+        <div class="row col-12 col-lg-6 float-right mx-0 mt-4">
+            <h2 class="text-center text-md-start"><b>Instrucciones</b></h2>
+            <p>¡Bienvenid@@ a <b>Nina's World</b>! Para disfrutar de la aventura, sigue estas instrucciones:</p>
+            <ol>
+                <li>Dirígete a la página principal, donde encontrarás la aplicación embebida en tu navegador web. !Aquí también podrás agrandar el juego a pantalla completa!</li>
+                <li>Una vez ahí, haz clic en el botón verde que dice "Jugar" para comenzar tu misión.</li>
+                <li>Dentro del juego, deberás esquivar a los Pájaros Malignos que se aproximan durante 15 segundos. Utiliza las teclas de dirección para moverte hacia adelante y atrás, además de saltar para evitar los obstáculos.</li>
+                <li>Observa tus vidas restantes en la esquina superior izquierda de la pantalla. ¡Recuerda que solo tienes 3 vidas! Si eres impactado por los Pájaros Malignos 3 veces, perderás la partida.</li>
+                <li>¡Sobrevive durante el tiempo establecido para restaurar la paz en el cosmos y completar tu misión! Una vez que lo logres, habrás reestablecido el orden en el mundo de Nina.</li>
+                <li>Para volver a jugar y continuar desafiando a los Pájaros Malignos, simplemente presiona el botón de "Jugar" nuevamente.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<!-- Embedding of Unity Game -->
+<!--<div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" width=1366 height=768 tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+            <div id="unity-progress-bar-full"></div>
+        </div>
+    </div>
+    <div id="unity-warning"> </div>
+    <div id="unity-footer">
+        <div id="unity-webgl-logo"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">Actividad_3</div>
+    </div>
+</div>
+<script>
+    var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var warningBanner = document.querySelector("#unity-warning");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Actividad_3_Build.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/Actividad_3_Build.data",
+        frameworkUrl: buildUrl + "/Actividad_3_Build.framework.js",
+        codeUrl: buildUrl + "/Actividad_3_Build.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Actividad_3",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        container.className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+
+
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
+
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                loadingBar.style.display = "none";
+                fullscreenButton.onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
+              }).catch((message) => {
+                alert(message);
+              });
+            };
+
+    document.body.appendChild(script);
+</script>-->

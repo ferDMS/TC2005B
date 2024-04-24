@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PruebaWebGL.Pages
 {
-	public class PaginaWebGLModel : PageModel
+	public class CreditsModel : PageModel
     {
         public void OnGet()
         {
